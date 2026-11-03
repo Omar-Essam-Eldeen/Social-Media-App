@@ -1,75 +1,44 @@
-# React + TypeScript + Vite
+# Magic Social
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A social media app built with React + TypeScript + Vite. My Route Academy assignment — it uses the academy's Linked Posts API.
 
-Currently, two official plugins are available:
+**Live demo:** https://socialapp-seven-phi.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## What it does
 
-## React Compiler
+- Sign up / log in, with a profile page
+- Home feed with all posts, plus Following and My posts filters
+- Create, edit and delete posts (text + image)
+- Comments: add, edit, delete, like
+- Like, share and bookmark posts, with a Saved page
+- Infinite scroll — more posts load as you scroll down
+- Change password (you stay logged in after)
+- Dark / light mode, glass-style design
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech
 
-## Expanding the ESLint configuration
+- React 19 + TypeScript + Vite
+- Mantine for UI components
+- TanStack Query for data fetching and caching
+- Axios for the API calls
+- React Hook Form + Zod for the forms
+- React Router for navigation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Run it locally
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Then open http://localhost:5173.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+To build for production:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run build
 ```
+
+## API
+
+All data comes from the Route Academy Linked Posts API: https://route-posts.routemisr.com/
