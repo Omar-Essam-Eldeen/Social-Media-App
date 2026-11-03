@@ -33,17 +33,17 @@ export default function CommentItem({
   };
 
   const likeMutation = useMutation({
-    mutationFn: () => likeComment(comment._id),
+    mutationFn: () => likeComment(postId, comment._id),
     onSuccess: refresh,
   });
 
   const deleteMutation = useMutation({
-    mutationFn: () => deleteComment(comment._id),
+    mutationFn: () => deleteComment(postId, comment._id),
     onSuccess: refresh,
   });
 
   const updateMutation = useMutation({
-    mutationFn: (content: string) => updateComment(comment._id, { content }),
+    mutationFn: (content: string) => updateComment(postId, comment._id, { content }),
     onSuccess: () => {
       setEditing(false);
       refresh();
@@ -71,6 +71,7 @@ export default function CommentItem({
       </Group>
 
       {editing ? (
+        <>
         <Group gap="xs" align="flex-end">
           <TextInput value={draft} onChange={(e) => setDraft(e.currentTarget.value)} style={{ flex: 1 }} />
           <Button
@@ -91,6 +92,12 @@ export default function CommentItem({
             Cancel
           </Button>
         </Group>
+          {updateMutation.isError && (
+            <Text c="red" size="sm">
+              Couldn&apos;t save — try again.
+            </Text>
+          )}
+        </>
       ) : (
         <>
           <Text size="sm">{comment.content}</Text>

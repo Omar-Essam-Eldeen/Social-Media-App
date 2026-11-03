@@ -18,21 +18,21 @@ export async function createComment(postId: string, body: CreateCommentReq): Pro
   return data;
 }
 // PUT /comments/:commentId — edit a comment
-export async function updateComment(commentId: string, body: CreateCommentReq): Promise<ApiResponse<Comment>> {
+export async function updateComment(postId: string, commentId: string, body: CreateCommentReq): Promise<ApiResponse<Comment>> {
   const formData = new FormData();
   formData.append("content", body.content);
   if (body.image) formData.append("image", body.image);
 
-  const { data } = await api.put<ApiResponse<Comment>>(`/comments/${commentId}`, formData);
+  const { data } = await api.put<ApiResponse<Comment>>(`/posts/${postId}/comments/${commentId}`, formData);
   return data;
 }
 // DELETE /comments/:commentId — delete a comment
-export async function deleteComment(commentId: string): Promise<ApiResponse<Comment>> {
-  const { data } = await api.delete<ApiResponse<Comment>>(`/comments/${commentId}`);
+export async function deleteComment(postId: string, commentId: string): Promise<ApiResponse<Comment>> {
+  const { data } = await api.delete<ApiResponse<Comment>>(`/posts/${postId}/comments/${commentId}`);
   return data;
 }
 // PUT /comments/:commentId/like — like a comment
-export async function likeComment(commentId: string): Promise<ApiResponse<Comment>> {
-  const { data } = await api.put<ApiResponse<Comment>>(`/comments/${commentId}/like`);
+export async function likeComment(postId: string, commentId: string): Promise<ApiResponse<Comment>> {
+  const { data } = await api.put<ApiResponse<Comment>>(`/posts/${postId}/comments/${commentId}/like`);
   return data;
 }

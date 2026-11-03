@@ -1,10 +1,15 @@
-import type { AllPostsResponse, ApiResponse, ProfileResponse, User } from "../../types.ts";
+import type { AllPostsResponse, ApiResponse, Meta, Post, ProfileResponse, User } from "../../types.ts";
 import { api } from "../client.ts";
 // ================= Extras =================
 // GET /users/bookmarks — your saved posts
 export async function getBookmarks(): Promise<AllPostsResponse> {
-  const { data } = await api.get<AllPostsResponse>("/users/bookmarks");
-  return data;
+  // The bookmarks endpoint returns { data: { bookmarks: [...] } },
+  // not { data: { posts: [...] } } like the feed does — unwrap it here
+  // so the page can keep reading data.posts.
+  const { data } = await api.get<{ success: boolean; message: string; meta: Meta; data: { bookmarks: Post[] } }>(
+    "/users/bookmarks",
+  );
+  return { success: data.success, message: data.message, meta: data.meta, data: { posts: data.data.bookmarks } };
 }
 // GET /users/suggestions — people to follow
 export async function getSuggestions(): Promise<ApiResponse<User[]>> {
@@ -23,7 +28,6 @@ export async function getUserProfile(userId: string): Promise<ProfileResponse> {
   const user = ((raw as { user?: User } | null)?.user ?? raw) as User;
   return { ...data, data: user };
 }
-
 // GET /users/:userId/posts — another user's posts
 export async function getUserPosts(userId: string): Promise<AllPostsResponse> {
   const { data } = await api.get<AllPostsResponse>(`/users/${userId}/posts`);
