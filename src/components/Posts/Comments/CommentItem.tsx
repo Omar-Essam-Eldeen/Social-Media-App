@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ActionIcon, Avatar, Button, Card, Group, Image, Text, TextInput } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { Heart, Pencil, Trash2 } from "lucide-react";
 import type { Comment } from "../../../api/Posts/Comments/types.ts";
 import { deleteComment, likeComment, updateComment } from "../../../api/Posts/Comments/api.ts";
@@ -51,7 +52,13 @@ export default function CommentItem({
   });
 
   const handleDelete = () => {
-    if (window.confirm("Delete this comment?")) deleteMutation.mutate();
+    modals.openConfirmModal({
+      title: "Delete this comment?",
+      children: <Text size="sm">This can&apos;t be undone.</Text>,
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onConfirm: () => deleteMutation.mutate(),
+    });
   };
 
   return (

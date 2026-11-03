@@ -46,11 +46,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(res.data.user);
   };
 
+  // The API returns a NEW token — save it, or the next request logs you out.
   const changePassword = async (body: ChangePasswordReq) => {
     const res = await changePasswordApi(body);
     if (!res.data?.token) throw new Error(res.message || "Password change failed");
     localStorage.setItem("token", res.data.token);
-    setUser(res.data.user);
+    // The endpoint returns a token but NO user object — only replace the
+    // user when one is actually returned, or this wipes the session and
+    // the app bounces to /login even though the change succeeded.
+    if (res.data.user) setUser(res.data.user);
   };
 
   const logout = () => {

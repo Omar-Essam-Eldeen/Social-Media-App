@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { ActionIcon, Avatar, Button, Card, FileInput, Group, Image, Text, Textarea } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { Bookmark, Heart, MessageCircle, Pencil, Share2, Trash2 } from "lucide-react";
 import type { Post } from "../../types.ts";
 import type { UpdatePostReq } from "../../api/Posts/types.ts";
@@ -73,7 +74,13 @@ export default function PostCard({ post }: { post: Post }) {
   });
 
   const handleDelete = () => {
-    if (window.confirm("Delete this post?")) deleteMutation.mutate();
+    modals.openConfirmModal({
+      title: "Delete this post?",
+      children: <Text size="sm">This can&apos;t be undone.</Text>,
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onConfirm: () => deleteMutation.mutate(),
+    });
   };
 
   const handleCancelEdit = () => {
